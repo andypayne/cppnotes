@@ -219,7 +219,7 @@ C++11 - You can override default capture modes
 Scott Meyers claims that using default capture modes is not advised -- read further.
 
 ---
-Lambdas - capturing class members
+### Lambdas - capturing class members
 You have to capture this to use a member:
 [this]() { ... }
 
@@ -227,5 +227,24 @@ You have to capture this to use a member:
 
 
 ---
+### Mutable Lambdas
 
+By default, lambdas can't modify captured values. To get around this, use the ```mutable``` keyword.
+
+```C++
+vector<pair<int, int>> flight_hours;
+// populate ...
+
+auto running_total = 100;
+
+for_each(flight_hours.begin(), flight_hours.end(),
+    [running_total](pair<int, int>& x) mutable
+        { running_total += x.first; x.second = running_total; });
+```
+
+Now running_total can maintain state.
+Note that mutable lambdas cannot be passed by const reference.
+
+
+---
 
