@@ -1,4 +1,3 @@
----
 ### Value Initialization
 
 ```C++
