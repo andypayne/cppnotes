@@ -1,5 +1,9 @@
 ---
+### Value Initialization
+
+```C++
 int n{};
+```
 
 value initialization - C++11 -
 http://en.cppreference.com/w/cpp/language/value_initialization
