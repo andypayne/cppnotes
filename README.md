@@ -36,14 +36,18 @@ Clang applies the fix to C++11
 
 
 ---
+### constexpr
 
-constexpr - use for constants known at compile time
+- use for constants known at compile time
 
+```C++
 constexpr double pi = 3.14159265;
-
+```
 
 ---
-const placement - equivalent, but the left side is more idiomatic English:
+### const placement
+
+Equivalent, but the left side is more idiomatic English:
 
 ```C++
 const int x;  <==>  int const x;
@@ -51,18 +55,17 @@ func(std::string const& s) <==> func(const std::string& s)
 ```
 
 ---
-C++11 Move Semantics
+### C++11 Move Semantics
+
 Allow large objects to be returned out of functions in a more performant way, with no special syntax changes
 return bigResult; // Will do the right thing
 
-
 ---
-C++11 Trailing return type syntax
+### C++11 Trailing return type syntax
 
 int fun(double x)
 -becomes->
 auto fun(double x) -> int
-
 
 This is useful when declaring template functions that have return types that are dependent on the template typenames.
 
@@ -79,7 +82,7 @@ Also note that auto and decltype are both being used.
 
 
 ---
-std::vector initialization
+### std::vector initialization
 
 ```C++
 std::vector<int> v1{10};  // one element vector with value [10]
@@ -88,7 +91,7 @@ std::vector<int> v2(10);  // vector with capacity of 10 - [0, 0, 0, 0, 0, 0, 0, 
 
 
 ---
-Range for with references
+### Range for with references
 
 ```C++
 std::vector v;
@@ -104,13 +107,12 @@ for (auto const& e : v) {
 ```
 
 ---
-CMakeLists.txt
+### CMakeLists.txt
 
 set(CMAKE_CXX_STANDARD 11)
 
-
 ---
-auto
+### auto
 
 An example where it's more than syntactic sugar, where it's difficult without it:
 
@@ -123,9 +125,8 @@ void do_magic(const X& x, const Y& y)
 }
 ```
 
-
 ---
-Lambda expressions
+### Lambda expressions
 
 ```C++
 [](){ return 1 + 2; }
@@ -146,7 +147,7 @@ Parameter limitations:
 
 
 ---
-Storing Lambdas -
+### Storing Lambdas -
 
 ```C++
 auto f = [](int i) { return i > 10; }
@@ -185,21 +186,26 @@ abs_lambda(-10);  // 10
 ```
 
 ---
-Lambdas capture variables - closure
+### Lambdas capture variables - closure
 
+```C++
 [today](JetPlane& jet) { jet.require_service(today); }
 // today in the introducer is captured from the environment
+```
 
 Local variables always need to be captured explicitly.
-Capturing by reference - [&var](){}
+Capturing by reference - ```[&var](){}```
 - Up to you to make sure the references are still valid when the lambda is invoked, otherwise undefined behavior
 
 Note - you can't capture globals(/?) by reference:
+```C++
 auto x = 10;
 auto f = [&x]() { return x; }  // Doesn't work
+```
 
 ---
-Lambdas - default capture modes
+### Lambdas - default capture modes
+
 You can capture multiple variables in the same way without having to write a list.
 Note - not all variables are captured, just the ones that are used in the lambda expression.
 
@@ -247,4 +253,3 @@ Note that mutable lambdas cannot be passed by const reference.
 
 
 ---
-
