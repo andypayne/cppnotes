@@ -194,7 +194,9 @@ abs_lambda(-10);  // 10
 ```
 
 Local variables always need to be captured explicitly.
-Capturing by reference - ```[&var](){}```
+Capturing by reference -
+```[&var](){}```
+
 - Up to you to make sure the references are still valid when the lambda is invoked, otherwise undefined behavior
 
 Note - you can't capture globals(/?) by reference:
@@ -250,6 +252,30 @@ for_each(flight_hours.begin(), flight_hours.end(),
 
 Now running_total can maintain state.
 Note that mutable lambdas cannot be passed by const reference.
+
+
+---
+### Debugging
+
+Run cmake with the debug option:
+```
+$ cmake -DCMAKE_BUILD_TYPE=Debug ..
+```
+
+Launch lldb for test_prog with args: -x /path/file.txt
+```
+lldb
+(lldb) file ./test_prog
+Current executable set to './test_prog' (x86_64).
+(lldb) r -x /path/file.txt
+Process 55661 launched: './test_prog' (x86_64)
+...
+Process 55661 stopped
+* thread #1, queue = 'com.apple.main-thread', stop reason = EXC_BAD_ACCESS (code=1, address=0x80)
+...
+Target 1: (test_prog) stopped.
+(lldb)
+```
 
 
 ---
