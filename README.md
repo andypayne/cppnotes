@@ -264,7 +264,7 @@ $ cmake -DCMAKE_BUILD_TYPE=Debug ..
 
 Launch lldb for test_prog with args: -x /path/file.txt
 ```
-lldb
+$ lldb
 (lldb) file ./test_prog
 Current executable set to './test_prog' (x86_64).
 (lldb) r -x /path/file.txt
@@ -274,7 +274,12 @@ Process 55661 stopped
 * thread #1, queue = 'com.apple.main-thread', stop reason = EXC_BAD_ACCESS (code=1, address=0x80)
 ...
 Target 1: (test_prog) stopped.
-(lldb)
+(lldb) thread list
+Process 55661 stopped
+* thread #1: tid = 0xb00ee1, 0x0000000100050566 test_prog ...
+(lldb) thread backtrace
+* thread #1, queue = 'com.apple.main-thread', stop reason = EXC_BAD_ACCESS (code=1, address=0x80)
+...
 ```
 
 
