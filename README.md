@@ -285,7 +285,7 @@ Process 55661 stopped
 
 ---
 ### Move semantics and rvalue references
-From Stroustrop's /A Tour of C++/
+From Stroustrop's _A Tour of C++_
 
 Move semantics allow moving an expensive object, rather than copying it.
 The ```&&``` designates an rvalue reference, which is a reference to an rvalue (vs lvalue), loosely something that can't be assigned to, such as the return value from a function call. "So an rvalue reference is something that nobody else can assign to, so that we can safely 'steal' its value."
