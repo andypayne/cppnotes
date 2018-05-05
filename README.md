@@ -60,6 +60,7 @@ func(std::string const& s) <==> func(const std::string& s)
 Allow large objects to be returned out of functions in a more performant way, with no special syntax changes
 return bigResult; // Will do the right thing
 
+
 ---
 ### C++11 Trailing return type syntax
 
@@ -263,7 +264,7 @@ $ cmake -DCMAKE_BUILD_TYPE=Debug ..
 ```
 
 Launch lldb for test_prog with args: -x /path/file.txt
-```
+```bash
 $ lldb
 (lldb) file ./test_prog
 Current executable set to './test_prog' (x86_64).
@@ -282,5 +283,63 @@ Process 55661 stopped
 ...
 ```
 
+---
+### Move semantics and rvalue references
+From Stroustrop's /A Tour of C++/
+
+Move semantics allow moving an expensive object, rather than copying it.
+The ```&&``` designates an rvalue reference, which is a reference to an rvalue (vs lvalue), loosely something that can't be assigned to, such as the return value from a function call. "So an rvalue reference is something that nobody else can assign to, so that we can safely 'steal' its value."
+
+From Stroustrop:
+
+```C++
+class Vector
+{
+  // ...
+  Vector(const Vector& a);             // copy constructor
+  Vector& operator=(const Vector& a);  // copy assignment
+  Vector(Vector&& a);                  // move constructor, notice no 'const'
+  Vector& operator=(Vector&& a);       // move assignment, notice no 'const'
+};
+
+// ...
+
+Vector::Vector(Vector&& a)
+  : elem{a.elem},    // "grab the elements" from a
+    sz{a.sz}
+{
+  a.elem = nullptr;  // now a has no elements
+  a.sz = 0;
+}
+```
+
+Given this class definition, consider the code below:
+
+```C++
+void f(const Vector& x, const Vector& y, const Vector& z)
+{
+  Vector r;
+  // ...
+  r = x + y + z;
+  // ...
+}
+```
+
+With the move constructor defined, the compiler will choose it for the return value from f(...), so no copying of vectors occurs.
+
+You can also be explicit with std::move(), in cases where the compiler can't determine a move.
+
+```C++
+Vector f()
+{
+  Vector x(1000);
+  Vector y(1000);
+  Vector z(1000);
+  z = x;             // copy
+  y = std::move(x);  // move
+  return z;          // move
+}
+```
 
 ---
+
