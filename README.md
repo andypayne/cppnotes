@@ -342,4 +342,32 @@ Vector f()
 ```
 
 ---
+### Regular Expressions
+
+Raw string literal - begin with ```R"(``` and end with ```)"``` to avoid the need to escape backslashes and quotes
+Example:
+
+```C++
+regex pat{R"(\w{2}\s*\d{5}(-\d{4})?)"};  // US postal codes (TX 77845)
+```
+
+operations and types:
+- ```regex_match()```
+- ```regex_search()```
+- ```regex_replace()```
+- ```regex_iterator``` - iterate over matches and submatches
+- ```regex_token_iterator``` - iterate over non-matches
+- ```sregex_iterator``` - a ```regex_iterator<string>``` for iterating over matches on a string
+
+Iterate over matches on a string:
+```C++
+string s("...");
+regex pat{R"((\w+))"};
+for (sregex_iterator p(s.begin(), s.end(), pat); p != sregex_iterator{}; ++p) {
+  cout << (*p)[1] << '\n';
+}
+```
+
+
+---
 
