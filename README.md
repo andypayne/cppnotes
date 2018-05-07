@@ -370,4 +370,29 @@ for (sregex_iterator p(s.begin(), s.end(), pat); p != sregex_iterator{}; ++p) {
 
 
 ---
+### Resource Management
+
+- ```unique_ptr``` for unique ownership
+- ```shared_ptr``` for shared ownership
+
+Compare vs traditional pointers:
+```C++
+void f(int i, int j)
+{
+  X* p = new X;             // alloc a new X
+  unique_ptr<X> sp{new X};  // alloc a new X with unique_ptr
+  // ...
+  if (i < 99) {
+    throw Z{};        // p is not released
+  }
+  if (j < 77) {
+    return;           // p is not released
+  }
+  p->do_something();  // if an exception is thrown, p is not released
+  sp->do_something();
+  delete p;           // destroy *p
+}
+
+
+---
 
