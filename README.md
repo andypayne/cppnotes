@@ -1,3 +1,9 @@
+
+Notes from digesting various sources:
+- C++11/C++14 videos
+- Stroustrop's _A Tour of C++_
+- Meyers's _Effective Modern C++_
+
 ### Value Initialization
 
 ```C++
@@ -392,6 +398,86 @@ void f(int i, int j)
   sp->do_something();
   delete p;           // destroy *p
 }
+
+---
+### nullptr over 0 and NULL
+
+Don't use ```0``` and ```NULL``` as pointer values.
+
+Overloaded functions could lead to surprises, for example:
+```C++
+void f(int);
+void f(bool);
+void f(void*);
+
+f(0);           // calls f(int), not f(void*)
+f(NULL);        // might not compile, but typically calls f(int), never f(void*)
+f(nullptr);     // calls f(void*)
+```
+
+```NULL``` is allowed to be typed as any integral type, so it could be an int or a long for example.
+```nullptr``` does not have an integral type.
+
+
+---
+### Alias declarations over ```typedefs```
+
+```C++
+typedef loooooooong_type shortt;  // Since C++98
+using shortt = loooooooong_type;  // C++11 alias
+```
+
+It's easier to read with function pointers, the alias isn't buried in the declaration:
+```C++
+typedef void (*FP)(int, const std::string&);
+using FP = void (*)(int, const std::string&);
+```
+
+Also, alias declarations may be templatized -- alias templates.
+
+
+---
+### Scoped enums
+
+```C++
+enum Color { black, white, red };  // unscoped - black, white, and red leaked into the current scope
+auto white = false;                // error
+
+enum class Color { black, white, red };  // scoped to Color
+auto white = false;                      // no error
+Color c = Color::red;
+```
+
+
+---
+### deleted functions over private undefined functions
+
+C++98, link failure if used:
+```C++
+class Foo
+{
+public:
+// ...
+
+private:
+  Foo(const Foo&);            // copy ctor, private undefined
+  Foo operator=(const Foo&);  // copy assignment operator, not defined
+};
+```
+
+C++11, compilation failure if used:
+```C++
+class Foo
+{
+public:
+// ...
+
+  Foo(const Foo&) = delete;            // copy ctor, deleted function
+  Foo operator=(const Foo&) = delete;  // copy assignment operator, deleted function
+};
+```
+
+Overloads of functions for certain types can also be filtered out this way.
 
 
 ---
