@@ -398,6 +398,7 @@ void f(int i, int j)
   sp->do_something();
   delete p;           // destroy *p
 }
+```
 
 ---
 ### nullptr over 0 and NULL
